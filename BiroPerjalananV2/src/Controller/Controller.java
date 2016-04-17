@@ -9,6 +9,8 @@ import Database.Database;
 import Model.Pelanggan;
 import Model.Petugas;
 import Model.TempatWisata;
+import Model.PaketWisata;
+import Model.Perjalanan;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -35,7 +37,7 @@ public class Controller implements ActionListener {
     View.TambahPerjalanan tp;
     View.TambahPelanggan tpel;
     View.TambahPetugas tpet;
-    tubes.TambahPaket tpk;
+    View.TambahPaket tpk;
     View.TambahTempat ttm;
     View.ViewTempatWisata vt;
     View.ViewPelanggan vpel;
@@ -52,7 +54,6 @@ public class Controller implements ActionListener {
     View.EditTempat edtem;
     View.EditPaket edpak;
     View.EditPerjalanan edpjl;
-    
 
     public Controller() {
         db = new Database();
@@ -64,7 +65,7 @@ public class Controller implements ActionListener {
         pel.getEditplng().addActionListener(this);
         pel.getViewplng().addActionListener(this);
         pel.getKembaliplng().addActionListener(this);
-        
+
         //View Menu Petugas
         pet = new View.Petugas();
         pet.getTmbhptg().addActionListener(this);
@@ -72,7 +73,7 @@ public class Controller implements ActionListener {
         pet.getViewptg().addActionListener(this);
         pet.getEditptg().addActionListener(this);
         pet.getKembaliptg().addActionListener(this);
-        
+
         //View Menu Tempat
         tem = new View.Tempat();
         tem.getTmbhtmp().addActionListener(this);
@@ -80,21 +81,21 @@ public class Controller implements ActionListener {
         tem.getViewtmp().addActionListener(this);
         tem.getEdittmp().addActionListener(this);
         tem.getKembalitmp().addActionListener(this);
-        
+
         //View Menu Paket
         pak = new View.Paket();
         pak.getTmbhpkt().addActionListener(this);
         pak.getDeletepkt().addActionListener(this);
         pak.getViewpkt().addActionListener(this);
         pak.getKembalipkt().addActionListener(this);
-        
+
         //View Menu Perjalanan
         pjl = new View.Perjalanan();
         pjl.getTmbhpjl().addActionListener(this);
         pjl.getDeletepjl().addActionListener(this);
         pjl.getViewpjl().addActionListener(this);
         pjl.getKembalipjl().addActionListener(this);
-        
+
         // View Tambah Perjalanan
         tp = new View.TambahPerjalanan();
         tp.getBtnkembalipjl().addActionListener(this);
@@ -102,7 +103,7 @@ public class Controller implements ActionListener {
         tp.getCbpwisata().addActionListener(this);
         tp.getBtnCek().addActionListener(this);
         tp.getBtnCek2().addActionListener(this);
-        
+
         // View Tambah Pelanggan 
         tpel = new View.TambahPelanggan();
         tpel.getBtnsmpnplg().addActionListener(this);
@@ -114,15 +115,16 @@ public class Controller implements ActionListener {
         tpet.getBtnkembaliptgs().addActionListener(this);
 
         // View Tambah Paket
-        tpk = new tubes.TambahPaket();
+        tpk = new View.TambahPaket();
+        tpk.getBtnKembali().addActionListener(this);
+        tpk.getBtnSimpan().addActionListener(this);
+        tpk.getBtnCek().addActionListener(this);
+        tpk.getCboxTempat().addActionListener(this);
 
         // View Tambah Tempat
         ttm = new View.TambahTempat();
         ttm.getBtnsmpntmp().addActionListener(this);
         ttm.getBtnkembalitmp().addActionListener(this);
-
-        // View View Tempat Wisata
-        vt = new View.ViewTempatWisata();
 
         // View Main Menu
         mm = new View.mainMenu();
@@ -131,7 +133,11 @@ public class Controller implements ActionListener {
         mm.getBtnpaketwisata().addActionListener(this);
         mm.getBtnpelanggan().addActionListener(this);
         mm.getBtnpetugas().addActionListener(this);
-        
+
+        // View View Tempat Wisata
+        vpkt = new View.ViewPaketWisata();
+        vpkt.getKembaliViewPak().addActionListener(this);
+
         // View Pelanggan
         vpel = new View.ViewPelanggan();
         vpel.getKembaliViewPel().addActionListener(this);
@@ -139,97 +145,101 @@ public class Controller implements ActionListener {
         // View Petugas
         vpet = new View.ViewPetugas();
         vpet.getKembaliViewPet().addActionListener(this);
-        
+
         // View Tempat
         vt = new View.ViewTempatWisata();
         vt.getKembaliViewTem().addActionListener(this);
-        
+
+        // View Perjalanan
+        vpjl = new View.ViewPerjalanan();
+        vpjl.getKembaliViewPjl().addActionListener(this);
+
         //Menu Delete Pelanggan
         dpel = new View.DeletePelanggan();
         dpel.getBtnDelPel().addActionListener(this);
         dpel.getBtnKembali().addActionListener(this);
-        
+
         //Menu Delete Petugas
         dpet = new View.DeletePetugas();
         dpet.getBtnDelPet().addActionListener(this);
         dpet.getBtnKembali().addActionListener(this);
-        
+
         //Menu Delete Tempat
         dtem = new View.DeleteTempat();
         dtem.getBtnDelTem().addActionListener(this);
         dtem.getBtnKembali().addActionListener(this);
-        
+
         //Menu Delete Perjalanan
         dpjl = new View.DeletePerjalanan();
         dpjl.getBtnDelPjl().addActionListener(this);
         dpjl.getBtnKembali().addActionListener(this);
-        
+
         //Menu Delete Paket
         dpak = new View.DeletePaket();
         dpak.getBtnDelPak().addActionListener(this);
         dpak.getBtnKembali().addActionListener(this);
-        
+
         //Menu Edit Pelanggan
         edpel = new View.EditPelanggan();
         edpel.getBtnKembali().addActionListener(this);
         edpel.getBtnSimpan().addActionListener(this);
-        
+
         //Menu Edit Petugas
         edpet = new View.EditPetugas();
         edpet.getBtnKembali().addActionListener(this);
         edpet.getBtnSimpan().addActionListener(this);
-        
+
         //Menu Edit Tempat
         edtem = new View.EditTempat();
         edtem.getBtnKembali().addActionListener(this);
         edtem.getBtnSimpan().addActionListener(this);
-        
+
         //Menu Edit Paket
         edpak = new View.EditPaket();
-        
+
         //Menu Edit Perjalanan
         edpjl = new View.EditPerjalanan();
-        
+
         mm.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object x = e.getSource();
-        
+
         //Main Menu
-        if (x.equals(mm.getBtnperjalanan())){
+        if (x.equals(mm.getBtnperjalanan())) {
             pjl.setVisible(true);
             mm.setVisible(false);
-        }else if (x.equals(mm.getBtnpaketwisata())){
+        } else if (x.equals(mm.getBtnpaketwisata())) {
             pak.setVisible(true);
             mm.setVisible(false);
-        }else if (x.equals(mm.getBtnpelanggan())){
+        } else if (x.equals(mm.getBtnpelanggan())) {
             pel.setVisible(true);
             mm.setVisible(false);
-        }else if (x.equals(mm.getBtnpetugas())){
+        } else if (x.equals(mm.getBtnpetugas())) {
             pet.setVisible(true);
             mm.setVisible(false);
-        }else if (x.equals(mm.getBtntempatwisata())){
+        } else if (x.equals(mm.getBtntempatwisata())) {
             tem.setVisible(true);
             mm.setVisible(false);
         }
-        
+
         //Menu Perjalanan
-        if (x.equals(pjl.getKembalipjl())){
+        if (x.equals(pjl.getKembalipjl())) {
             mm.setVisible(true);
             pjl.setVisible(false);
-        }else if (x.equals(pjl.getTmbhpjl())){
+        } else if (x.equals(pjl.getTmbhpjl())) {
             try {
                 tp.setVisible(true);
                 String query = "select idPerjalanan from Perjalanan";
                 ResultSet rs = db.getData(query);
                 if (rs.next()) {
-                    tp.getTxtidpjl().setText(((rs.getInt("IdPerjalanan"))+1)+"");
-                }else {
+                    tp.getTxtidpjl().setText(((rs.getInt("IdPerjalanan")) + 1) + "");
+                } else {
                     tp.getTxtidpjl().setText("1");
                 }
-                
+
                 query = "select idPaket from PaketWisata";
                 rs = db.getData(query);
                 ArrayList<String> list = new ArrayList<String>();
@@ -237,7 +247,7 @@ public class Controller implements ActionListener {
                     list.add(rs.getString("idPaket"));
                 }
                 tp.addCombo(tp.getCbpwisata(), list);
-                
+
                 query = "select idPelanggan from Pelanggan";
                 rs = db.getData(query);
                 list = new ArrayList<String>();
@@ -245,49 +255,108 @@ public class Controller implements ActionListener {
                     list.add(rs.getString("idPelanggan"));
                 }
                 tp.addCombo(tp.getCbox1(), list);
-                
+
                 pjl.setVisible(false);
             } catch (SQLException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (x.equals(pjl.getViewpjl())){
-            tp.setVisible(true);
-            pjl.setVisible(false);
-        }else if (x.equals(pjl.getDeletepjl())){
+        } else if (x.equals(pjl.getViewpjl())) {
+            try {
+                pjl.setVisible(false);
+                vpjl.setVisible(true);
+                vpjl.changeHeader();
+                String query = "select * from Perjalanan ";
+                ResultSet rs = db.getData(query);
+                ArrayList<Perjalanan> list = new ArrayList<Perjalanan>();
+                while (rs.next()) {
+                    list.add(new Perjalanan(rs.getLong("idperjalanan")));
+                }
+                vpjl.insertData(list);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(pjl.getDeletepjl())) {
             dpjl.setVisible(true);
             pjl.setVisible(false);
         }
-        
-        
+
         //Menu Paket 
-        if (x.equals(pak.getKembalipkt())){
+        if (x.equals(pak.getKembalipkt())) {
             mm.setVisible(true);
             pak.setVisible(false);
-        }else if (x.equals(pak.getTmbhpkt())){
-            tp.setVisible(true);
-            pak.setVisible(false);
-        }else if (x.equals(pak.getViewpkt())){
-            tp.setVisible(true);
-            pak.setVisible(false);
-        }else if (x.equals(pak.getDeletepkt())){
+        } else if (x.equals(pak.getTmbhpkt())) {
+            try {
+                tpk.setVisible(true);
+                String query = "select idPaket from Paketwisata";
+                ResultSet rs = db.getData(query);
+                if (rs.next()) {
+                    tpk.getTxtIdPaket().setText(((rs.getInt("IdPaket")) + 1) + "");
+                } else {
+                    tpk.getTxtIdPaket().setText("1");
+                }
+
+                query = "select idTempat from TempatWisata";
+                rs = db.getData(query);
+                ArrayList<String> list = new ArrayList<String>();
+                while (rs.next()) {
+                    list.add(rs.getString("idTempat"));
+                }
+                tpk.addCombo(tpk.getCboxTempat(), list);
+                pak.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(pak.getViewpkt())) {
+            try {
+                pak.setVisible(false);
+                vpkt.setVisible(true);
+                vpkt.changeHeader();
+                String query = "select * from PaketWisata ";
+                ResultSet rs = db.getData(query);
+                ArrayList<PaketWisata> list = new ArrayList<PaketWisata>();
+                Database d2 = new Database();
+                while (rs.next()) {
+                    String query2 = "select * from tempatwisata where namatempat='" + rs.getString("tempatwisata") + "'";
+                    ResultSet rs2 = d2.getData(query2);
+                    if (rs2.next()) {
+                        list.add(new PaketWisata(rs.getLong("IdPaket"), rs.getLong("HargaPaket"), new TempatWisata(rs2.getString("namatempat"), Long.parseLong(rs2.getString("harga")), Long.parseLong(rs2.getString("idtempat")))));
+                    }
+                }
+
+                vpkt.insertData(list);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(pak.getDeletepkt())) {
             dpak.setVisible(true);
             pak.setVisible(false);
         }
-        
+
         //Menu Tempat
-        if (x.equals(tem.getKembalitmp())){
+        if (x.equals(tem.getKembalitmp())) {
             mm.setVisible(true);
             tem.setVisible(false);
-        }else if (x.equals(tem.getTmbhtmp())){
-            ttm.setVisible(true);
-            tem.setVisible(false);
-        }else if (x.equals(tem.getDeletetmp())){
+        } else if (x.equals(tem.getTmbhtmp())) {
+            try {
+                ttm.setVisible(true);
+                String query = "select idTempat from TempatWisata";
+                ResultSet rs = db.getData(query);
+                if (rs.next()) {
+                    ttm.getTxtIdTem().setText(((rs.getInt("IdTempat")) + 1) + "");
+                } else {
+                    ttm.getTxtIdTem().setText("1");
+                }
+                tem.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(tem.getDeletetmp())) {
             dtem.setVisible(true);
             tem.setVisible(false);
-        }else if (x.equals(tem.getEdittmp())){
+        } else if (x.equals(tem.getEdittmp())) {
             edtem.setVisible(true);
             tem.setVisible(false);
-        }else if (x.equals(tem.getViewtmp())){
+        } else if (x.equals(tem.getViewtmp())) {
             try {
                 tem.setVisible(false);
                 vt.setVisible(true);
@@ -303,22 +372,32 @@ public class Controller implements ActionListener {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
         //Menu Petugas
-        if (x.equals(pet.getKembaliptg())){
+        if (x.equals(pet.getKembaliptg())) {
             mm.setVisible(true);
             pet.setVisible(false);
-        }else if (x.equals(pet.getTmbhptg())){
-            tpet.setVisible(true);
-            pet.setVisible(false);
-        }else if (x.equals(pet.getDeleteptg())){
+        } else if (x.equals(pet.getTmbhptg())) {
+            try {
+                tpet.setVisible(true);
+                String query = "select idPetugas from Petugas";
+                ResultSet rs = db.getData(query);
+                if (rs.next()) {
+                    tpet.getTxtidptgs().setText(((rs.getInt("IdPetugas")) + 1) + "");
+                } else {
+                    tpet.getTxtidptgs().setText("1");
+                }
+                pet.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(pet.getDeleteptg())) {
             dpet.setVisible(true);
             pet.setVisible(false);
-        }else if (x.equals(pet.getEditptg())){
+        } else if (x.equals(pet.getEditptg())) {
             edpet.setVisible(true);
             pet.setVisible(false);
-        }else if (x.equals(pet.getViewptg())){
+        } else if (x.equals(pet.getViewptg())) {
             try {
                 pet.setVisible(false);
                 vpet.setVisible(true);
@@ -334,21 +413,32 @@ public class Controller implements ActionListener {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         //Menu Pelanggan
-        if (x.equals(pel.getKembaliplng())){
+        if (x.equals(pel.getKembaliplng())) {
             mm.setVisible(true);
             pel.setVisible(false);
-        }else if (x.equals(pel.getTmbhplng())){
-            tpel.setVisible(true);
-            pel.setVisible(false);
-        }else if (x.equals(pel.getDeleteplng())){
+        } else if (x.equals(pel.getTmbhplng())) {
+            try {
+                tpel.setVisible(true);
+                String query = "select idPelanggan from Pelanggan";
+                ResultSet rs = db.getData(query);
+                if (rs.next()) {
+                    tpel.getTxtidplg().setText(((rs.getInt("IdPelanggan")) + 1) + "");
+                } else {
+                    tpel.getTxtidplg().setText("1");
+                }
+                pel.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (x.equals(pel.getDeleteplng())) {
             dpel.setVisible(true);
             pel.setVisible(false);
-        }else if (x.equals(pel.getEditplng())){
+        } else if (x.equals(pel.getEditplng())) {
             edpel.setVisible(true);
             pel.setVisible(false);
-        }else if (x.equals(pel.getViewplng())){
+        } else if (x.equals(pel.getViewplng())) {
             try {
                 pel.setVisible(false);
                 vpel.setVisible(true);
@@ -364,250 +454,266 @@ public class Controller implements ActionListener {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-         
-        
+
         // Handler GUI Tambah Perjalanan
-        
         if (x.equals(tp.getBtnsmpnpjl())) {
             String query = "insert into Perjalanan values("
-                    + tp.getTxtidpjl()+ "',"
-                    + tp.getCbox1().getSelectedItem().toString() + "',"
-                    + tp.getCbpwisata().getSelectedItem().toString() + "'";
-            if (db.runQuery(query)){
+                    + Integer.parseInt(tp.getTxtidpjl().getText()) + ","
+                    + Integer.parseInt(tp.getCbpwisata().getSelectedItem().toString()) + ","
+                    + Integer.parseInt(tp.getCbox1().getSelectedItem().toString()) + ")";
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data perjalanan berhasil disimpan", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data perjalanan tidak lengkap", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
-            
-        }
-        else if (x.equals(tp.getBtnCek())){
+        } else if (x.equals(tp.getBtnCek())) {
             try {
                 String query = "select * from PaketWisata where idPaket = "
                         + tp.getCbpwisata().getSelectedItem().toString();
                 ResultSet rs = db.getData(query);
-                while (rs.next()){
+                while (rs.next()) {
                     tp.getTxtTempatWisata().setText(rs.getString("TempatWisata"));
                     tp.getTxtHargaPaket().setText(rs.getString("HargaPaket"));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else if (x.equals(tp.getBtnCek2())){
+        } else if (x.equals(tp.getBtnCek2())) {
             try {
                 String query = "select * from Pelanggan where idPelanggan = "
                         + tp.getCbox1().getSelectedItem().toString();
                 ResultSet rs = db.getData(query);
-                while (rs.next()){
+                while (rs.next()) {
                     tp.getTxtNamaPelanggan().setText(rs.getString("Nama"));
                     tp.getTxtAlamatPelanggan().setText(rs.getString("Alamat"));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        else if (e.getSource().equals(tp.getBtnkembalipjl())) {
+        } else if (e.getSource().equals(tp.getBtnkembalipjl())) {
             tp.setVisible(false);
             pjl.setVisible(true);
         }
-        
+
         // Handler GUI Tambah Petugas
         if (x.equals(tpet.getBtnsmpnptgs())) {
             String query = "insert into Petugas values("
                     + tpet.getTxtidptgs().getText() + ","
                     + "'" + tpet.getTxtnamaptgs().getText() + "',"
-                    + "'" + tpet.getTxtalamatptgs().getText() +  "');";
-            if (db.runQuery(query)){
+                    + "'" + tpet.getTxtalamatptgs().getText() + "');";
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data petugas berhasil disimpan", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data petugas tidak lengkap", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (e.getSource().equals(tpet.getBtnkembaliptgs())) {
             tpet.setVisible(false);
             pet.setVisible(true);
         }
-        
+
         // Handler GUI Tambah Pelanggan
         if (e.getSource().equals(tpel.getBtnsmpnplg())) {
             String query = "insert into Pelanggan values("
                     + tpel.getTxtidplg().getText() + ","
                     + "'" + tpel.getTxtnamaplg().getText() + "',"
                     + "'" + tpel.getTxtalamatplg().getText() + "');";
-             if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data pelanggan berhasil disimpan", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data pelanggan tidak lengkap", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (e.getSource().equals(tpel.getBtnkembaliplg())) {
             tpel.setVisible(false);
             pel.setVisible(true);
         }
-        
+
         // Handler GUI Tambah Tempat
         if (e.getSource().equals(ttm.getBtnsmpntmp())) {
             String query = "insert into TempatWisata values("
                     + ttm.getTxtIdTem().getText() + ","
                     + "'" + ttm.getTxtNamaTem().getText() + "',"
                     + "'" + ttm.getTxtHarga().getText() + "');";
-             if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata berhasil disimpan", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata tidak lengkap", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (e.getSource().equals(ttm.getBtnkembalitmp())) {
             ttm.setVisible(false);
             tem.setVisible(true);
         }
-        
+
         // Handler GUI Tambah Paket
-        /*if (e.getSource().equals(ttm.getBtnsmpntmp())) {
-            String query = "insert into TempatWisata values("
-                    + ttm.getTxtIdTem().getText() + ","
-                    + "'" + ttm.getTxtNamaTem().getText() + "',"
-                    + "'" + ttm.getTxtHarga().getText() + "');";
+        if (e.getSource().equals(tpk.getBtnSimpan())) {
+            String query = "insert into PaketWisata values("
+                    + tpk.getTxtIdPaket().getText() + ","
+                    + "'" + tpk.getTxtHargaPaket().getText() + "',"
+                    + "'" + tpk.getTxtNamaTempat().getText() + "');";
             db.runQuery(query);
-            JOptionPane.showMessageDialog(null, "Data Tempat Wisata berhasil disimpan", "Informasi View Tambah Pelanggan", JOptionPane.INFORMATION_MESSAGE);
-        } else if (e.getSource().equals(ttm.getBtnkembalitmp())) {
-            ttm.setVisible(false);
-            tem.setVisible(true);
-        }*/
-        
+            JOptionPane.showMessageDialog(null, "Data Paket Wisata berhasil disimpan", "Informasi View Tambah Pelanggan", JOptionPane.INFORMATION_MESSAGE);
+        } else if (x.equals(tpk.getBtnCek())) {
+            try {
+                String query = "select * from TempatWisata where idtempat = "
+                        + tpk.getCboxTempat().getSelectedItem().toString();
+                ResultSet rs = db.getData(query);
+                while (rs.next()) {
+                    tpk.getTxtNamaTempat().setText(rs.getString("NamaTempat"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (e.getSource().equals(tpk.getBtnKembali())) {
+            tpk.setVisible(false);
+            pak.setVisible(true);
+        }
+
         //Handler GUI Lihat Pelanggan
         if (x.equals(vpel.getKembaliViewPel())) {
             vpel.setVisible(false);
             pel.setVisible(true);
         }
-        
+
         //Handler GUI Lihat Petugas
         if (x.equals(vpet.getKembaliViewPet())) {
             vpet.setVisible(false);
             pet.setVisible(true);
         }
-        
+
         //Handler GUI Lihat Tempat
         if (x.equals(vt.getKembaliViewTem())) {
             vt.setVisible(false);
             tem.setVisible(true);
         }
-        
+
+        //Handler GUI Lihat Perjalanan
+        if (x.equals(vpjl.getKembaliViewPjl())) {
+            vpjl.setVisible(false);
+            pjl.setVisible(true);
+        }
+
+        //Handler GUI Lihat Paket
+        if (x.equals(vpkt.getKembaliViewPak())) {
+            vpkt.setVisible(false);
+            pak.setVisible(true);
+        }
+
         //Handler GUI Delete Pelanggan
         if (x.equals(dpel.getBtnKembali())) {
             dpel.setVisible(false);
             pel.setVisible(true);
-        }else if (e.getSource().equals(dpel.getBtnDelPel())) {
+        } else if (e.getSource().equals(dpel.getBtnDelPel())) {
             String query = "delete from Pelanggan where idPelanggan = '"
                     + dpel.getTxtDelPel().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data pelanggan berhasil dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data pelanggan gagal dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Delete Petugas
         if (x.equals(dpet.getBtnKembali())) {
             dpet.setVisible(false);
             pet.setVisible(true);
-        }else if (e.getSource().equals(dpet.getBtnDelPet())) {
+        } else if (e.getSource().equals(dpet.getBtnDelPet())) {
             String query = "delete from Petugas where idPetugas = '"
                     + dpet.getTxtDelPet().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data petugas berhasil dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data petugas gagal dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Delete Tempat
         if (x.equals(dtem.getBtnKembali())) {
             dtem.setVisible(false);
             tem.setVisible(true);
-        }else if (e.getSource().equals(dtem.getBtnDelTem())) {
+        } else if (e.getSource().equals(dtem.getBtnDelTem())) {
             String query = "delete from TempatWisata where idTempat = '"
                     + dtem.getTxtDelTem().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata berhasil dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata gagal dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Delete Paket
         if (x.equals(dpak.getBtnKembali())) {
             dpak.setVisible(false);
             pak.setVisible(true);
-        }else if (e.getSource().equals(dpak.getBtnDelPak())) {
+        } else if (e.getSource().equals(dpak.getBtnDelPak())) {
             String query = "delete from PaketWisata where idPaket = '"
                     + dpak.getTxtDelPak().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data paket wisata berhasil dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data paket wisata gagal dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Delete Perjalanan
         if (x.equals(dpjl.getBtnKembali())) {
             dpjl.setVisible(false);
             pjl.setVisible(true);
-        }else if (e.getSource().equals(dpjl.getBtnDelPjl())) {
+        } else if (e.getSource().equals(dpjl.getBtnDelPjl())) {
             String query = "delete from Perjalanan where idPerjalanan = '"
                     + dpjl.getTxtDelPjl().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data perjalanan berhasil dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data perjalanan gagal dihapus", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Edit Pelanggan
         if (x.equals(edpel.getBtnKembali())) {
             edpel.setVisible(false);
             pel.setVisible(true);
-        }else if (e.getSource().equals(edpel.getBtnSimpan())) {
+        } else if (e.getSource().equals(edpel.getBtnSimpan())) {
             String query = "update pelanggan SET idPelanggan = '"
                     + edpel.getTxtIdPelBaru().getText() + "' ,Nama = '"
                     + edpel.getTxtNamaPelBaru().getText() + "' ,Alamat = '"
                     + edpel.getTxtAlamatPelBaru().getText() + "' where IdPelanggan = '"
                     + edpel.getTxtIdPelBaru().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data pelanggan berhasil diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data pelanggan gagal diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Edit Petugas
         if (x.equals(edpet.getBtnKembali())) {
             edpet.setVisible(false);
             pet.setVisible(true);
-        }else if (e.getSource().equals(edpet.getBtnSimpan())) {
+        } else if (e.getSource().equals(edpet.getBtnSimpan())) {
             String query = "update petugas SET idPetugas = '"
                     + edpet.getTxtIdPetBaru().getText() + "' ,Nama = '"
                     + edpet.getTxtNamaPetBaru().getText() + "' ,Alamat = '"
                     + edpet.getTxtAlamatPetBaru().getText() + "' where IdPetugas = '"
                     + edpet.getTxtIdPetBaru().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data petugas berhasil diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data petugas gagal diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
         //Handler GUI Edit Tempat
         if (x.equals(edtem.getBtnKembali())) {
             edtem.setVisible(false);
             tem.setVisible(true);
-        }else if (e.getSource().equals(edtem.getBtnSimpan())) {
+        } else if (e.getSource().equals(edtem.getBtnSimpan())) {
             String query = "update TempatWisata SET IdTempat = '"
                     + edtem.getTxtIdTemBaru().getText() + "' ,NamaTempat = '"
                     + edtem.getTxtNamaTemBaru().getText() + "' ,Harga = '"
                     + edtem.getTxtHargaBaru().getText() + "' where IdTempat = '"
                     + edtem.getTxtIdTemBaru().getText() + "'";
-            if (db.runQuery(query)){
+            if (db.runQuery(query)) {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata berhasil diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Data tempat wisata gagal diubah", "Informasi Tambah Perjalanan", JOptionPane.INFORMATION_MESSAGE);
             }
         }

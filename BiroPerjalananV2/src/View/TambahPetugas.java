@@ -76,6 +76,7 @@ public class TambahPetugas extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Nama ");
 
+        txtidptgs.setEnabled(false);
         txtidptgs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtidptgsActionPerformed(evt);

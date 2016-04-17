@@ -83,6 +83,8 @@ public class TambahTempat extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Harga");
 
+        txtIdTem.setEnabled(false);
+
         btnkembalitmp.setText("KEMBALI");
 
         btnsmpntmp.setText("SIMPAN");

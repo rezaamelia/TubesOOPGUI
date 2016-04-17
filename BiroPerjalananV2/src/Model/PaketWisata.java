@@ -13,17 +13,29 @@ import java.io.Serializable;
 import java.util.ArrayList;
 public class PaketWisata implements Serializable {
 	private ArrayList<TempatWisata> daftarTujuanWisata;
+        private String TempatWisata;
 	private long HargaPaket;
 	private int nTempatWisata;
 	private int maxTempatWisata;
 	private long idPaket;
         
-	public PaketWisata(long idPaket, int maxTempatWisata){
+	public PaketWisata(long idPaket, long HargaPaket){
 		daftarTujuanWisata = new ArrayList();
-		this.maxTempatWisata=maxTempatWisata;
+		this.HargaPaket = HargaPaket;
 		this.idPaket=idPaket;
 	}
+
+        public PaketWisata(long idPaket,long HargaPaket,TempatWisata tw) {
+                daftarTujuanWisata = new ArrayList();
+                daftarTujuanWisata.add(tw);
+                this.HargaPaket = HargaPaket;
+                this.idPaket = idPaket;
+        }
+        
+        
 	
+        
+        
 	public void addTempatWisata(TempatWisata w){
 		if (nTempatWisata<maxTempatWisata) {
 			daftarTujuanWisata.add(w);
@@ -43,6 +55,12 @@ public class PaketWisata implements Serializable {
         public long getIdPaket(){
             return idPaket;
         }
+
+        public long getHargaPaket() {
+            return HargaPaket;
+        }
+        
+        
         
         public void setIdPaket(long idPaket){
             this.idPaket=idPaket;
@@ -70,4 +88,10 @@ public class PaketWisata implements Serializable {
 			}
 		}
 	}
+
+    public ArrayList<TempatWisata> getDaftarTujuanWisata() {
+        return daftarTujuanWisata;
+    }
+        
+        
 }

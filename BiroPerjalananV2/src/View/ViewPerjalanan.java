@@ -5,6 +5,13 @@
  */
 package View;
 
+import Model.PaketWisata;
+import Model.Pelanggan;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author NVLWL
@@ -18,6 +25,31 @@ public class ViewPerjalanan extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JButton getKembaliViewPjl() {
+        return kembaliViewPjl;
+    }
+
+    public JTable getTablePjl() {
+        return tablePjl;
+    }
+
+    
+    public void changeHeader(){
+        String[] header = {"Id Perjalanan", "Id PaketWisata","Id Pelanggan"};
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+        tablePjl.setModel(model);
+    }
+    
+    public void insertData(ArrayList<Model.Perjalanan> data){
+        DefaultTableModel model = (DefaultTableModel) tablePjl.getModel();
+        for(Model.Perjalanan p : data){
+            for (PaketWisata pak : p.getDaftarPaketWisata()) {
+                for (Pelanggan pel : p.getDaftarPelanggan()){
+                  model.addRow(new String[] {p.getNoPerjalanan() + "" ,pak.getIdPaket() +"", pel.getId()+""});
+                }
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,8 +64,8 @@ public class ViewPerjalanan extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         kembaliViewPjl = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablePjl = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,26 +78,32 @@ public class ViewPerjalanan extends javax.swing.JFrame {
 
         kembaliViewPjl.setText("KEMBALI");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        tablePjl.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(tablePjl);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(208, 208, 208))
+                .addGap(0, 127, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(120, 120, 120))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(206, 206, 206))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(309, 309, 309)
                 .addComponent(kembaliViewPjl)
-                .addGap(300, 300, 300))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,10 +111,10 @@ public class ViewPerjalanan extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(kembaliViewPjl)
-                .addGap(37, 37, 37))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -156,8 +194,8 @@ public class ViewPerjalanan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton kembaliViewPjl;
+    private javax.swing.JTable tablePjl;
     // End of variables declaration//GEN-END:variables
 }

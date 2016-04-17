@@ -180,6 +180,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtIdTem">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtNamaTem">
             </Component>

@@ -14,9 +14,14 @@ import java.util.ArrayList;
 public class Perjalanan {
 
     private ArrayList<Pelanggan> pelanggan = new ArrayList();
-    private PaketWisata paket;
+    private ArrayList<PaketWisata> daftarPaketWisata;
+    private ArrayList<Pelanggan> daftarPelanggan;
     int jum=0;
     long noPerjalanan;
+
+    public Perjalanan(long noPerjalanan) {
+        this.noPerjalanan = noPerjalanan;
+    }
 
     public long getNoPerjalanan() {
         return noPerjalanan;
@@ -27,11 +32,16 @@ public class Perjalanan {
         
     }
 
-    public Perjalanan(long noPerjalanan, PaketWisata pkt) {
-        setPaket(pkt);
-        setNoPerjalanan(noPerjalanan);
+    
+    public Perjalanan(long noPerjalanan, PaketWisata pw, Pelanggan pel) {
+        daftarPelanggan = new ArrayList();
+        daftarPelanggan.add(pel);
+        daftarPaketWisata = new ArrayList();
+        daftarPaketWisata.add(pw);
+        this.noPerjalanan = noPerjalanan;
     }
     
+       
     public void addPelanggan(Pelanggan p) {
         if (pelanggan.size() < 40) {
             pelanggan.add(p);
@@ -45,11 +55,17 @@ public class Perjalanan {
     public int getJumlahPelanggan(){
         return jum;
     }
-    
-    public void setPaket(PaketWisata pw) {
-        paket = pw;
+
+    public ArrayList<PaketWisata> getDaftarPaketWisata() {
+        return daftarPaketWisata;
+    }
+
+    public ArrayList<Pelanggan> getDaftarPelanggan() {
+        return daftarPelanggan;
     }
     
+    
+        
     public void removePelanggan(long id) {
         for (Pelanggan p : pelanggan) {
             if (p.getId() == id) {

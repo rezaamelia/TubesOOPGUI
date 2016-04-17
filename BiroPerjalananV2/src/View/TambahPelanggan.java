@@ -82,6 +82,7 @@ public class TambahPelanggan extends javax.swing.JFrame {
         labelidptgs.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         labelidptgs.setText("ID Pelanggan");
 
+        txtidplg.setEnabled(false);
         txtidplg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtidplgActionPerformed(evt);
